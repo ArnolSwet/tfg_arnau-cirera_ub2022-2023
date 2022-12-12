@@ -1,8 +1,8 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: lighteyes
-  name: main-configmap-lighteyes
+  namespace: grafana
+  name: main-configmap
   labels:
     grafana_dashboard: "client"
 data:
@@ -71,35 +71,6 @@ data:
             }
           ],
           "title": "INFRAESTRUCTURE",
-          "transparent": true,
-          "type": "text"
-        },
-        {
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
-          "gridPos": {
-            "h": 6,
-            "w": 4,
-            "x": 0,
-            "y": 1
-          },
-          "id": 22,
-          "options": {
-            "content": "<table style=\"width:100%; height:100%;border:0px solid black;\"> \n     <td style=\"text-align: center;vertical-align: middle;border:0px solid black; \"> \n       <img src=\"https://apoloanalytics.com/wp-content/uploads/2022/06/ApoloAnalytics_Vertical_White.png\"   width=\"89%\"> \n     </td> \n</table>",
-            "mode": "html"
-          },
-          "pluginVersion": "9.1.4",
-          "targets": [
-            {
-              "datasource": {
-                "type": "datasource",
-                "uid": "grafana"
-              },
-              "refId": "A"
-            }
-          ],
           "transparent": true,
           "type": "text"
         },
