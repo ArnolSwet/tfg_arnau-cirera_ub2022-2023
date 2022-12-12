@@ -8,6 +8,8 @@ spec:
     path: apps/grafana/app
     repoURL: https://github.com/ArnolSwet/tfg_arnau-cirera_ub2022-2023.git
     targetRevision: testing
+    helm:
+      values: values-testing.yaml
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: grafana
