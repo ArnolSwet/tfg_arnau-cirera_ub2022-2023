@@ -5,7 +5,7 @@ metadata:
   namespace: argocd
 spec:
   source:
-    path: grafana/app
+    path: apps/grafana/app
     repoURL: https://github.com/ArnolSwet/tfg_arnau-cirera_ub2022-2023.git
     targetRevision: testing
   destination:
