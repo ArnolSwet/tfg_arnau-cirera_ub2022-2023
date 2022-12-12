@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: victim
-  namespace: infraestructure
+  namespace: infrastructure
   labels:
     app: victim
 spec:

@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: victim-deployment
+  namespace: infrastructure
   labels:
     app: victim
 spec:
