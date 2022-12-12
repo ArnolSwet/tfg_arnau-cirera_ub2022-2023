@@ -3,7 +3,4 @@ kind: Kustomization
 
 
 resources:
-  - namespaces.yaml
-  - app.yaml
-  - wazuh
-  - grafana
+  - victim
