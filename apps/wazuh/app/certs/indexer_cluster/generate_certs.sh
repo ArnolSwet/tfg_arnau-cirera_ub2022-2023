@@ -40,29 +40,29 @@ openssl pkcs8 -inform PEM -outform PEM -in node-key-temp.pem -topk8 -nocrypt -v1
 
 echo "create: node.csr"
 
-openssl req -days 3650 -new -key node-key.pem -out node.csr -subj "/C=US/L=California/O=Company/CN=*.wazuh-indexer"
+openssl req -days 3650 -new -key node-key.pem -out node.csr -subj "/C=US/L=California/O=Company/CN=*.elasticsearch"
 
 echo "create: node.pem"
 
 openssl x509 -req -days 3650 -in node.csr -CA root-ca.pem -CAkey root-ca-key.pem -CAcreateserial -sha256 -out node.pem
 
-echo "* dashboard cert"
+echo "* Kibana cert"
 
-echo "create: dashboard-key-temp.pem"
+echo "create: kibana-key-temp.pem"
 
-openssl genrsa -out dashboard-key-temp.pem 2048
+openssl genrsa -out kibana-key-temp.pem 2048
 
-echo "create: dashboard-key.pem"
+echo "create: kibana-key.pem"
 
-openssl pkcs8 -inform PEM -outform PEM -in dashboard-key-temp.pem -topk8 -nocrypt -v1 PBE-SHA1-3DES -out dashboard-key.pem
+openssl pkcs8 -inform PEM -outform PEM -in kibana-key-temp.pem -topk8 -nocrypt -v1 PBE-SHA1-3DES -out kibana-key.pem
 
-echo "create: dashboard.csr"
+echo "create: kibana.csr"
 
-openssl req -days 3650 -new -key dashboard-key.pem -out dashboard.csr -subj "/C=US/L=California/O=Company/CN=dashboard"
+openssl req -days 3650 -new -key kibana-key.pem -out kibana.csr -subj "/C=US/L=California/O=Company/CN=kibana"
 
-echo "create: dashboard.pem"
+echo "create: kibana.pem"
 
-openssl x509 -req -days 3650 -in dashboard.csr -CA root-ca.pem -CAkey root-ca-key.pem -CAcreateserial -sha256 -out dashboard.pem
+openssl x509 -req -days 3650 -in kibana.csr -CA root-ca.pem -CAkey root-ca-key.pem -CAcreateserial -sha256 -out kibana.pem
 
 
 
