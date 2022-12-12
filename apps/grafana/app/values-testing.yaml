@@ -1,0 +1,109 @@
+grafana:
+  replicas: 1
+  serviceAccount:
+      create: true
+      name: grafana
+      annotations:
+        eks.amazonaws.com/role-arn: "arn:aws:iam::265270975032:role/testing20210330083346403300000002"
+  podDisruptionBudget:
+    minAvailable: 1
+  livenessProbe:
+    initialDelaySeconds: 60
+    timeoutSeconds: 60
+  grafana.ini:
+    auth:
+      # disable_login_form: false
+      oauth_auto_login: false
+  plugins:
+    - grafana-worldmap-panel
+    - grafana-piechart-panel
+    - grafana-clock-panel
+    - snuids-svg-panel
+    - ryantxu-ajax-panel
+    - macropower-analytics-panel
+    - michaeldmoore-annunciator-panel
+    - farski-blendstat-panel
+    - yesoreyeram-boomtable-panel
+    - speakyourcode-button-panel
+    - marcusolsson-calendar-panel
+    - jdbranham-diagram-panel
+    - marcusolsson-dynamictext-panel
+    - agenty-flowcharting-panel
+    - marcusolsson-gantt-panel
+    - grafana-guidedtour-panel
+    - marcusolsson-hexmap-panel
+    - pierosavi-imageit-panel
+    - michaeldmoore-multistat-panel
+    - snuids-radar-panel
+    - netsage-sankey-panel
+    - scadavis-synoptic-panel
+    - mxswat-separator-panel
+    - novatec-sdg-panel
+    - isaozler-shiftselector-panel
+    - cloudspout-button-panel
+
+  extraLabels:
+    environment: testing
+  serviceMonitor:
+    enabled: false
+  service:
+    type: LoadBalancer
+    # nodePort: 32000
+    port: 80
+    portName: http
+  resources:
+    limits:
+      cpu: 500m
+      memory: 500Mi
+    requests:
+      cpu: 100m
+      memory: 50Mi
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+       
+        - name: Elasticsearch-Wazuh-Alerts
+          type: elasticsearch
+          url: https://wazuh-indexer.wazuh:9200
+          access: proxy
+          database: 'wazuh-alerts-*'
+          basicAuth: true
+          basicAuthUser: 'lighteyes'
+          jsonData:
+            tlsSkipVerify: true
+            esVersion: '7.10.0'
+            timeField: '@timestamp'
+          secureJsonData:
+            basicAuthPassword: 'D2Zi2s7SrptD8DfUJPr3'
+            tlsSkipVerify: true
+        - name: Elasticsearch-Wazuh-Monitoring
+          type: elasticsearch
+          url: https://wazuh-indexer.wazuh:9200
+          access: proxy
+          database: 'wazuh-monitoring-*'
+          basicAuth: true
+          basicAuthUser: 'lighteyes'
+          jsonData:
+            tlsSkipVerify: true
+            esVersion: '7.10.0'
+            timeField: 'timestamp'
+          secureJsonData:
+            basicAuthPassword: 'D2Zi2s7SrptD8DfUJPr3'
+            tlsSkipVerify: true
+            
+  sidecar:
+    resources:
+      limits:
+        cpu: 100m
+        memory: 100Mi
+      requests:
+        cpu: 10m
+        memory: 50Mi
+    dashboards:
+      enabled: true
+      SCProvider: true
+      label: grafana_dashboard
+      labelValue: client
+      searchNamespace: grafana
+  namespaceOverride: grafana

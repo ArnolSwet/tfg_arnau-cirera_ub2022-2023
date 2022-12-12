@@ -1,0 +1,3689 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: lighteyes
+  name: agent-configmap-lighteyes
+  labels:
+    grafana_dashboard: "client"
+data:
+  agent-security-dashboard.json: |-
+    {
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": "-- Grafana --",
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "target": {
+              "limit": 100,
+              "matchAny": false,
+              "tags": [],
+              "type": "dashboard"
+            },
+            "type": "dashboard"
+          }
+        ]
+      },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "gnetId": null,
+      "graphTooltip": 0,
+      "iteration": 1653924951746,
+      "links": [],
+      "liveNow": false,
+      "panels": [
+        {
+          "datasource": "Elasticsearch-Wazuh-Alerts",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                }
+              },
+              "mappings": []
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 0
+          },
+          "id": 10,
+          "maxDataPoints": 3,
+          "options": {
+            "legend": {
+              "displayMode": "list",
+              "placement": "right",
+              "values": [
+                "value"
+              ]
+            },
+            "pieType": "donut",
+            "reduceOptions": {
+              "calcs": [
+                "sum"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "tooltip": {
+              "mode": "single"
+            }
+          },
+          "pluginVersion": "8.2.3",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "rule.mitre.technique",
+                  "id": "2",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_count",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "3",
+                  "settings": {
+                    "interval": "auto",
+                    "min_doc_count": "0",
+                    "trimEdges": "0"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "agent.name:$agentname AND rule.level:$rulelevel AND !data.vulnerability.cve:*",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "TOP MITRE ATT&CKS",
+          "type": "piechart"
+        },
+        {
+          "datasource": "Elasticsearch-Wazuh-Alerts",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "displayMode": "auto"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Level"
+                },
+                "properties": [
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "options": {
+                          "from": 3,
+                          "result": {
+                            "color": "blue",
+                            "index": 0,
+                            "text": "LOW"
+                          },
+                          "to": 5
+                        },
+                        "type": "range"
+                      },
+                      {
+                        "options": {
+                          "from": 6,
+                          "result": {
+                            "color": "light-orange",
+                            "index": 1,
+                            "text": "MEDIUM"
+                          },
+                          "to": 7
+                        },
+                        "type": "range"
+                      },
+                      {
+                        "options": {
+                          "from": 8,
+                          "result": {
+                            "color": "light-red",
+                            "index": 2,
+                            "text": "HIGH"
+                          },
+                          "to": 10
+                        },
+                        "type": "range"
+                      },
+                      {
+                        "options": {
+                          "from": 11,
+                          "result": {
+                            "color": "#b40f2d",
+                            "index": 3,
+                            "text": "CRITICAL"
+                          },
+                          "to": 13
+                        },
+                        "type": "range"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-background"
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "",
+                        "url": "/d/spAS1rsnz/agent-security?var-rulelevel=${__value.numeric}&${agentname:queryparam}&from=${__from}&to=${__to}"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Fired Times"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 95
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 0
+          },
+          "id": 26,
+          "options": {
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "8.2.3",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "rule.level",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "rule.firedtimes",
+                  "id": "2",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_count",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "rule.id",
+                  "id": "4",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_count",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                }
+              ],
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "agent.name:$agentname AND rule.level:$rulelevel AND !data.vulnerability.cve:*",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Rules Fires",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Count": true,
+                  "rule.id": true
+                },
+                "indexByName": {},
+                "renameByName": {
+                  "rule.firedtimes": "Fired Times",
+                  "rule.level": "Level"
+                }
+              }
+            },
+            {
+              "id": "sortBy",
+              "options": {
+                "fields": {},
+                "sort": [
+                  {
+                    "desc": true,
+                    "field": "Level"
+                  }
+                ]
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": "Elasticsearch-Wazuh-Alerts",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "displayMode": "auto"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 154
+                  },
+                  {
+                    "id": "unit",
+                    "value": "dateTimeAsIso"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 0
+          },
+          "id": 32,
+          "options": {
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "8.2.3",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "@timestamp",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_count",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "rule.description",
+                  "id": "4",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_count",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                }
+              ],
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "agent.name:$agentname AND rule.level:$rulelevel AND !data.vulnerability.cve:*",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Events Details",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Count": true
+                },
+                "indexByName": {},
+                "renameByName": {
+                  "@timestamp": "Time",
+                  "rule.description": "Description"
+                }
+              }
+            },
+            {
+              "id": "sortBy",
+              "options": {
+                "fields": {},
+                "sort": [
+                  {
+                    "desc": false,
+                    "field": "Time"
+                  }
+                ]
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "collapsed": false,
+          "datasource": null,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 8
+          },
+          "id": 52,
+          "panels": [],
+          "title": "ALERTS",
+          "type": "row"
+        },
+        {
+          "datasource": null,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 9
+          },
+          "id": 44,
+          "links": [
+            {
+              "title": "",
+              "url": "/d/NzG8z2u7z/specific-security?"
+            }
+          ],
+          "options": {
+            "content": "# Title\n\n  For markdown syntax help: [commonmark.org/help](https://commonmark.org/help/)\n           ",
+            "mode": "markdown"
+          },
+          "pluginVersion": "8.2.3",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "ALERTS",
+          "type": "text"
+        },
+        {
+          "datasource": "Elasticsearch-Wazuh-Alerts",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "links": [
+                {
+                  "title": "",
+                  "url": "/d/NzG8z2u7z/alerts-security?${agentname:queryparam}&${rulelevel:queryparam}"
+                }
+              ],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "dark-blue",
+                    "value": null
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 4,
+            "x": 0,
+            "y": 10
+          },
+          "id": 2,
+          "maxDataPoints": 3,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "text": {},
+            "textMode": "auto"
+          },
+          "pluginVersion": "8.2.3",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "agent.name:$agentname AND rule.level:$rulelevel AND !data.vulnerability.cve:*",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Total Alerts",
+          "transformations": [
+            {
+              "id": "rowsToFields",
+              "options": {
+                "mappings": [
+                  {
+                    "fieldName": "Time",
+                    "handlerKey": "field.name"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "mode": "reduceRow",
+                "reduce": {
+                  "reducer": "sum"
+                },
+                "replaceFields": true
+              }
+            }
+          ],
+          "type": "stat"
+        },
+        {
+          "datasource": "Elasticsearch-Wazuh-Alerts",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "dark-red",
+                    "value": null
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 4,
+            "x": 4,
+            "y": 10
+          },
+          "id": 6,
+          "maxDataPoints": 3,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "sum"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "text": {},
+            "textMode": "auto"
+          },
+          "pluginVersion": "8.2.3",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto",
+                    "min_doc_count": "0",
+                    "trimEdges": "0"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "agent.name:$agentname AND rule.groups: ((authentication_failure) OR (win_authentication_failed) OR (authentication_failures))",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Authentication failure",
+          "transformations": [
+            {
+              "id": "rowsToFields",
+              "options": {
+                "mappings": [
+                  {
+                    "fieldName": "Time",
+                    "handlerKey": "field.name"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "mode": "reduceRow",
+                "reduce": {
+                  "reducer": "sum"
+                },
+                "replaceFields": true
+              }
+            }
+          ],
+          "type": "stat"
+        },
+        {
+          "datasource": "Elasticsearch-Wazuh-Alerts",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 4,
+            "x": 8,
+            "y": 10
+          },
+          "id": 8,
+          "maxDataPoints": 3,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "sum"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "text": {},
+            "textMode": "auto"
+          },
+          "pluginVersion": "8.2.3",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "agent.name:$agentname AND rule.groups:authentication_success",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Auhentication succes",
+          "transformations": [
+            {
+              "id": "rowsToFields",
+              "options": {
+                "mappings": [
+                  {
+                    "fieldName": "Time",
+                    "handlerKey": "field.name"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "mode": "reduceRow",
+                "reduce": {
+                  "reducer": "sum"
+                },
+                "replaceFields": true
+              }
+            }
+          ],
+          "type": "stat"
+        },
+        {
+          "datasource": "Elasticsearch-Wazuh-Alerts",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [
+                {
+                  "title": "Alert Details",
+                  "url": "/d/NzG8z2u7z/alerts-security?${agentname:queryparam}&from=${__value.time}&to=${__value.time}"
+                }
+              ],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "LOW"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "blue",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "MEDIUM"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "light-orange",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "HIGH"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "light-red",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "CRITICAL"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#b40f2d",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 10
+          },
+          "id": 18,
+          "links": [],
+          "maxDataPoints": 100,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "single"
+            }
+          },
+          "pluginVersion": "8.2.3",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "rule.level",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "agent.name:$agentname AND rule.level:$rulelevel AND !data.vulnerability.cve:*",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Alert level evolution ",
+          "transformations": [
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "LOW",
+                "mode": "reduceRow",
+                "reduce": {
+                  "include": [
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  "reducer": "sum"
+                }
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "MEDIUM",
+                "mode": "reduceRow",
+                "reduce": {
+                  "include": [
+                    "7"
+                  ],
+                  "reducer": "sum"
+                }
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "HIGH",
+                "mode": "reduceRow",
+                "reduce": {
+                  "include": [
+                    "9",
+                    "8",
+                    "10"
+                  ],
+                  "reducer": "sum"
+                }
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "CRITICAL",
+                "mode": "reduceRow",
+                "reduce": {
+                  "include": [
+                    "12"
+                  ],
+                  "reducer": "sum"
+                }
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "3": true,
+                  "4": true,
+                  "5": true,
+                  "7": true,
+                  "8": true,
+                  "9": true,
+                  "10": true,
+                  "12": true,
+                  "13": true
+                },
+                "indexByName": {},
+                "renameByName": {}
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": "Elasticsearch-Wazuh-Alerts",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "links": [
+                {
+                  "title": "",
+                  "url": "/d/spAS1rsnz/agent-security?var-rulelevel=11&var-rulelevel=12&var-rulelevel=13"
+                }
+              ],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "dark-red",
+                    "value": null
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 3,
+            "x": 0,
+            "y": 18
+          },
+          "id": 4,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "sum"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "text": {},
+            "textMode": "auto"
+          },
+          "pluginVersion": "8.2.3",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "agent.name:$agentname AND rule.level:[12 TO *] AND !data.vulnerability.cve:*",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Critical Alerts",
+          "transformations": [
+            {
+              "id": "rowsToFields",
+              "options": {
+                "mappings": [
+                  {
+                    "fieldName": "Time",
+                    "handlerKey": "field.name"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "mode": "reduceRow",
+                "reduce": {
+                  "reducer": "sum"
+                },
+                "replaceFields": true
+              }
+            }
+          ],
+          "type": "stat"
+        },
+        {
+          "datasource": "Elasticsearch-Wazuh-Alerts",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                }
+              },
+              "mappings": []
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 9,
+            "x": 3,
+            "y": 18
+          },
+          "id": 14,
+          "maxDataPoints": 3,
+          "options": {
+            "legend": {
+              "displayMode": "list",
+              "placement": "right",
+              "values": [
+                "value"
+              ]
+            },
+            "pieType": "donut",
+            "reduceOptions": {
+              "calcs": [
+                "sum"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "tooltip": {
+              "mode": "single"
+            }
+          },
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "rule.description",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_count",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "agent.name:$agentname AND rule.level:$rulelevel AND !data.vulnerability.cve:*",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Top Alerts",
+          "type": "piechart"
+        },
+        {
+          "datasource": "Elasticsearch-Wazuh-Alerts",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "displayMode": "auto"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "ID"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 61
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "Alert Detail",
+                        "url": "/d/NzG8z2u7z/alerts-security?${agentname:queryparam}﻿&var-ruleid=﻿${__value.numeric}﻿&from=${__from}&to=${__to}"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Count"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 80
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Groups"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 319
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 18
+          },
+          "id": 30,
+          "options": {
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "8.2.3",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "rule.id",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_count",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "rule.description",
+                  "id": "4",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_count",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "rule.groups",
+                  "id": "2",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_count",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                }
+              ],
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "agent.name:$agentname AND rule.level:$rulelevel AND !data.vulnerability.cve:*",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Alert Summary",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "rule.groups": false
+                },
+                "indexByName": {},
+                "renameByName": {
+                  "Count": "Count",
+                  "rule.description": "Description",
+                  "rule.groups": "Groups",
+                  "rule.id": "ID"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": "Elasticsearch-Wazuh-Alerts",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "displayMode": "auto",
+                "filterable": true
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Time"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "dateTimeAsIso"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 150
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Level"
+                },
+                "properties": [
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "options": {
+                          "from": 3,
+                          "result": {
+                            "color": "blue",
+                            "index": 0,
+                            "text": "LOW"
+                          },
+                          "to": 5
+                        },
+                        "type": "range"
+                      },
+                      {
+                        "options": {
+                          "from": 6,
+                          "result": {
+                            "color": "light-orange",
+                            "index": 1,
+                            "text": "MEDIUM"
+                          },
+                          "to": 7
+                        },
+                        "type": "range"
+                      },
+                      {
+                        "options": {
+                          "from": 8,
+                          "result": {
+                            "color": "light-red",
+                            "index": 2,
+                            "text": "HIGH"
+                          },
+                          "to": 10
+                        },
+                        "type": "range"
+                      },
+                      {
+                        "options": {
+                          "from": 11,
+                          "result": {
+                            "color": "#b40f2d",
+                            "index": 3,
+                            "text": "CRITICAL"
+                          },
+                          "to": 13
+                        },
+                        "type": "range"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-background"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 99
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "Alert Details",
+                        "url": "/d/spAS1rsnz/agent-security?var-agentname=${__data.fields.Name}&var-rulelevel=${__value.numeric}&var-Filters=rule.id|=|${__data.fields.ID}&var-Filters=rule.firedtimes|=|${__data.fields[\"Fired Times\"]}&var-Filters=rule.groups|=|${__data.fields.Group}"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Name"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "Alerts",
+                        "url": "/d/spAS1rsnz/agent-security?var-agentname=${__value.text}"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 129
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "IP"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 122
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "",
+                        "url": "/d/spAS1rsnz/agent-security?var-Filters=agent.ip|=|${__data.fields.IP}"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Fired Times"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 113
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Group"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 209
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "",
+                        "url": "/d/spAS1rsnz/agent-security?var-Filters=rule.groups|=|${__value.text}"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "ID"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 67
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "",
+                        "url": "/d/spAS1rsnz/agent-security?var-Filters=rule.id|=|${__value.numeric}"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 26
+          },
+          "id": 22,
+          "options": {
+            "frameIndex": 1,
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "8.2.3",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "rule.level",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "agent.name",
+                  "id": "4",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_count",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "rule.firedtimes",
+                  "id": "9",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "agent.ip",
+                  "id": "11",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "rule.description",
+                  "id": "15",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "rule.groups",
+                  "id": "16",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "rule.id",
+                  "id": "17",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "22",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_count",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                }
+              ],
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "agent.name:$agentname AND rule.level:$rulelevel AND !data.vulnerability.cve:*",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Security Alerts",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Count": true,
+                  "agent.id": true,
+                  "cluster.name": true,
+                  "cluster.node": true,
+                  "decoder.name": true,
+                  "manager.name": true,
+                  "rule.gpg13": true,
+                  "rule.hipaa": true,
+                  "rule.mail": true,
+                  "rule.nist_800_53": true,
+                  "rule.pci_dss": true,
+                  "rule.tsc": true
+                },
+                "indexByName": {
+                  "@timestamp": 0,
+                  "Count": 19,
+                  "agent.id": 3,
+                  "agent.ip": 1,
+                  "agent.name": 2,
+                  "cluster.name": 5,
+                  "cluster.node": 4,
+                  "decoder.name": 18,
+                  "manager.name": 6,
+                  "rule.description": 14,
+                  "rule.firedtimes": 8,
+                  "rule.gpg13": 17,
+                  "rule.groups": 13,
+                  "rule.hipaa": 11,
+                  "rule.id": 7,
+                  "rule.level": 15,
+                  "rule.mail": 9,
+                  "rule.nist_800_53": 16,
+                  "rule.pci_dss": 10,
+                  "rule.tsc": 12
+                },
+                "renameByName": {
+                  "@timestamp": "Time",
+                  "agent.id": "",
+                  "agent.ip": "IP",
+                  "agent.name": "Name",
+                  "rule.description": "Description",
+                  "rule.firedtimes": "Fired Times",
+                  "rule.groups": "Group",
+                  "rule.id": "ID",
+                  "rule.level": "Level",
+                  "rule.nist_800_53": ""
+                }
+              }
+            },
+            {
+              "id": "sortBy",
+              "options": {
+                "fields": {},
+                "sort": [
+                  {
+                    "desc": true,
+                    "field": "Level"
+                  }
+                ]
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": "Elasticsearch-Wazuh-Alerts",
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 34
+          },
+          "id": 54,
+          "options": {
+            "dedupStrategy": "exact",
+            "enableLogDetails": true,
+            "prettifyLogMessage": false,
+            "showCommonLabels": false,
+            "showLabels": false,
+            "showTime": false,
+            "sortOrder": "Descending",
+            "wrapLogMessage": false
+          },
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [],
+              "metrics": [
+                {
+                  "id": "1",
+                  "settings": {
+                    "limit": "500"
+                  },
+                  "type": "logs"
+                }
+              ],
+              "query": "agent.name: $agentname AND rule.level:$rulelevel AND !data.vulnerability.cve:*",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Alert Information",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "_id": true,
+                  "_index": true,
+                  "_source": true,
+                  "_type": true,
+                  "agent.id": true,
+                  "agent.ip": false,
+                  "cluster.name": true,
+                  "cluster.node": true,
+                  "data.win.eventdata.addressLength": true,
+                  "data.win.eventdata.authenticationPackageName": true,
+                  "data.win.eventdata.binary": true,
+                  "data.win.eventdata.data": true,
+                  "data.win.eventdata.deviceName": true,
+                  "data.win.eventdata.elevatedToken": true,
+                  "data.win.eventdata.errorState": true,
+                  "data.win.eventdata.impersonationLevel": true,
+                  "data.win.eventdata.ipAddress": true,
+                  "data.win.eventdata.ipPort": true,
+                  "data.win.eventdata.keyLength": true,
+                  "data.win.eventdata.lmPackageName": true,
+                  "data.win.eventdata.logonGuid": true,
+                  "data.win.eventdata.logonProcessName": true,
+                  "data.win.eventdata.logonType": true,
+                  "data.win.eventdata.nTSTATUS": true,
+                  "data.win.eventdata.newTime": true,
+                  "data.win.eventdata.param1": true,
+                  "data.win.eventdata.param2": true,
+                  "data.win.eventdata.param3": true,
+                  "data.win.eventdata.param4": true,
+                  "data.win.eventdata.previousTime": true,
+                  "data.win.eventdata.processId": true,
+                  "data.win.eventdata.processName": true,
+                  "data.win.eventdata.queryName": true,
+                  "data.win.eventdata.serviceName": true,
+                  "data.win.eventdata.serviceSid": true,
+                  "data.win.eventdata.sourceFileID": true,
+                  "data.win.eventdata.sourceLine": true,
+                  "data.win.eventdata.sourceTag": true,
+                  "data.win.eventdata.status": true,
+                  "data.win.eventdata.subjectDomainName": true,
+                  "data.win.eventdata.subjectLogonId": true,
+                  "data.win.eventdata.subjectUserName": true,
+                  "data.win.eventdata.subjectUserSid": true,
+                  "data.win.eventdata.targetDomainName": true,
+                  "data.win.eventdata.targetLinkedLogonId": true,
+                  "data.win.eventdata.targetLogonId": true,
+                  "data.win.eventdata.targetUserName": true,
+                  "data.win.eventdata.targetUserSid": true,
+                  "data.win.eventdata.ticketEncryptionType": true,
+                  "data.win.eventdata.ticketOptions": true,
+                  "data.win.eventdata.type": true,
+                  "data.win.eventdata.virtualAccount": true,
+                  "data.win.eventdata.volumeName": true,
+                  "data.win.eventdata.workstationName": true,
+                  "data.win.system.channel": true,
+                  "data.win.system.computer": true,
+                  "data.win.system.eventID": true,
+                  "data.win.system.eventRecordID": true,
+                  "data.win.system.eventSourceName": true,
+                  "data.win.system.keywords": true,
+                  "data.win.system.level": true,
+                  "data.win.system.opcode": true,
+                  "data.win.system.processID": true,
+                  "data.win.system.providerGuid": true,
+                  "data.win.system.providerName": true,
+                  "data.win.system.task": true,
+                  "data.win.system.threadID": true,
+                  "data.win.system.version": true,
+                  "decoder.name": true,
+                  "highlight": true,
+                  "id": true,
+                  "input.type": true,
+                  "location": true,
+                  "manager.name": true,
+                  "previous_output": true,
+                  "rule.gdpr": true,
+                  "rule.gpg13": true,
+                  "rule.hipaa": true,
+                  "rule.id": true,
+                  "rule.mitre.tactic": false,
+                  "rule.mitre.technique": false,
+                  "rule.nist_800_53": true,
+                  "rule.pci_dss": true,
+                  "rule.tsc": true,
+                  "sort": true,
+                  "timestamp": true
+                },
+                "indexByName": {
+                  "@timestamp": 1,
+                  "_id": 2,
+                  "_index": 3,
+                  "_source": 4,
+                  "_type": 5,
+                  "agent.id": 6,
+                  "agent.ip": 7,
+                  "agent.name": 0,
+                  "cluster.name": 8,
+                  "cluster.node": 9,
+                  "data.win.eventdata.address": 10,
+                  "data.win.eventdata.addressLength": 11,
+                  "data.win.eventdata.authenticationPackageName": 12,
+                  "data.win.eventdata.binary": 13,
+                  "data.win.eventdata.data": 14,
+                  "data.win.eventdata.deviceName": 15,
+                  "data.win.eventdata.elevatedToken": 16,
+                  "data.win.eventdata.errorState": 17,
+                  "data.win.eventdata.impersonationLevel": 18,
+                  "data.win.eventdata.ipAddress": 19,
+                  "data.win.eventdata.ipPort": 20,
+                  "data.win.eventdata.keyLength": 21,
+                  "data.win.eventdata.lmPackageName": 22,
+                  "data.win.eventdata.logonGuid": 23,
+                  "data.win.eventdata.logonProcessName": 24,
+                  "data.win.eventdata.logonType": 25,
+                  "data.win.eventdata.nTSTATUS": 26,
+                  "data.win.eventdata.newTime": 27,
+                  "data.win.eventdata.param1": 28,
+                  "data.win.eventdata.param2": 29,
+                  "data.win.eventdata.param3": 30,
+                  "data.win.eventdata.param4": 31,
+                  "data.win.eventdata.previousTime": 32,
+                  "data.win.eventdata.processId": 33,
+                  "data.win.eventdata.processName": 34,
+                  "data.win.eventdata.queryName": 35,
+                  "data.win.eventdata.serviceName": 36,
+                  "data.win.eventdata.serviceSid": 37,
+                  "data.win.eventdata.sourceFileID": 38,
+                  "data.win.eventdata.sourceLine": 39,
+                  "data.win.eventdata.sourceTag": 40,
+                  "data.win.eventdata.status": 41,
+                  "data.win.eventdata.subjectDomainName": 42,
+                  "data.win.eventdata.subjectLogonId": 43,
+                  "data.win.eventdata.subjectUserName": 44,
+                  "data.win.eventdata.subjectUserSid": 45,
+                  "data.win.eventdata.targetDomainName": 46,
+                  "data.win.eventdata.targetLinkedLogonId": 47,
+                  "data.win.eventdata.targetLogonId": 48,
+                  "data.win.eventdata.targetUserName": 49,
+                  "data.win.eventdata.targetUserSid": 50,
+                  "data.win.eventdata.ticketEncryptionType": 51,
+                  "data.win.eventdata.ticketOptions": 52,
+                  "data.win.eventdata.type": 53,
+                  "data.win.eventdata.virtualAccount": 54,
+                  "data.win.eventdata.volumeName": 55,
+                  "data.win.eventdata.workstationName": 56,
+                  "data.win.system.channel": 57,
+                  "data.win.system.computer": 58,
+                  "data.win.system.eventID": 59,
+                  "data.win.system.eventRecordID": 60,
+                  "data.win.system.eventSourceName": 61,
+                  "data.win.system.keywords": 62,
+                  "data.win.system.level": 63,
+                  "data.win.system.message": 64,
+                  "data.win.system.opcode": 65,
+                  "data.win.system.processID": 66,
+                  "data.win.system.providerGuid": 67,
+                  "data.win.system.providerName": 68,
+                  "data.win.system.severityValue": 69,
+                  "data.win.system.systemTime": 70,
+                  "data.win.system.task": 71,
+                  "data.win.system.threadID": 72,
+                  "data.win.system.version": 73,
+                  "decoder.name": 74,
+                  "highlight": 75,
+                  "id": 76,
+                  "input.type": 77,
+                  "location": 78,
+                  "manager.name": 79,
+                  "previous_output": 80,
+                  "rule.description": 81,
+                  "rule.firedtimes": 82,
+                  "rule.frequency": 83,
+                  "rule.gdpr": 84,
+                  "rule.gpg13": 85,
+                  "rule.groups": 86,
+                  "rule.hipaa": 87,
+                  "rule.id": 88,
+                  "rule.info": 89,
+                  "rule.level": 90,
+                  "rule.mail": 91,
+                  "rule.mitre.id": 92,
+                  "rule.mitre.tactic": 93,
+                  "rule.mitre.technique": 94,
+                  "rule.nist_800_53": 95,
+                  "rule.pci_dss": 96,
+                  "rule.tsc": 97,
+                  "sort": 98,
+                  "timestamp": 99
+                },
+                "renameByName": {}
+              }
+            }
+          ],
+          "type": "logs"
+        },
+        {
+          "collapsed": false,
+          "datasource": null,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 43
+          },
+          "id": 50,
+          "panels": [],
+          "title": "WAZUH",
+          "type": "row"
+        },
+        {
+          "datasource": null,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 44
+          },
+          "id": 46,
+          "options": {
+            "content": "# Title\n\n  For markdown syntax help: [commonmark.org/help](https://commonmark.org/help/)\n           ",
+            "mode": "markdown"
+          },
+          "pluginVersion": "8.2.3",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "WAZUH",
+          "type": "text"
+        },
+        {
+          "datasource": "Elasticsearch-Wazuh-Alerts",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                }
+              },
+              "mappings": []
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 45
+          },
+          "id": 12,
+          "maxDataPoints": 3,
+          "options": {
+            "legend": {
+              "displayMode": "list",
+              "placement": "right",
+              "values": [
+                "value"
+              ]
+            },
+            "pieType": "donut",
+            "reduceOptions": {
+              "calcs": [
+                "sum"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "tooltip": {
+              "mode": "single"
+            }
+          },
+          "pluginVersion": "8.2.3",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "rule.groups",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_count",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "agent.name:$agentname AND rule.level:$rulelevel",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Wazuh Rules BrakeDown",
+          "type": "piechart"
+        },
+        {
+          "datasource": "Elasticsearch-Wazuh-Alerts",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                }
+              },
+              "mappings": []
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 45
+          },
+          "id": 24,
+          "maxDataPoints": 3,
+          "options": {
+            "legend": {
+              "displayMode": "list",
+              "placement": "right",
+              "values": [
+                "value"
+              ]
+            },
+            "pieType": "donut",
+            "reduceOptions": {
+              "calcs": [
+                "sum"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "tooltip": {
+              "mode": "single"
+            }
+          },
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "rule.pci_dss",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_count",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "agent.name:$agentname AND rule.level:$rulelevel",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Wazuh PC-DSS Controls",
+          "type": "piechart"
+        },
+        {
+          "datasource": null,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 53
+          },
+          "id": 48,
+          "title": "VULNERABILITIES",
+          "type": "row"
+        },
+        {
+          "datasource": null,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 54
+          },
+          "id": 36,
+          "options": {
+            "content": "# Title\n\n  For markdown syntax help: [commonmark.org/help](https://commonmark.org/help/)\n           ",
+            "mode": "markdown"
+          },
+          "pluginVersion": "8.2.3",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "VULNERABILITIES",
+          "type": "text"
+        },
+        {
+          "datasource": "Elasticsearch-Wazuh-Alerts",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                }
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "Critical": {
+                      "index": 3,
+                      "text": "CRITICAL"
+                    },
+                    "High": {
+                      "index": 0,
+                      "text": "HIGH"
+                    },
+                    "Low": {
+                      "index": 2,
+                      "text": "LOW"
+                    },
+                    "Medium": {
+                      "index": 1,
+                      "text": "MEDIUM"
+                    }
+                  },
+                  "type": "value"
+                }
+              ]
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byFrameRefID",
+                  "options": "A"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#b40f2d",
+                      "mode": "fixed"
+                    }
+                  },
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "options": {
+                          "from": -1,
+                          "result": {
+                            "index": 0,
+                            "text": "CRITICAL"
+                          },
+                          "to": 11111111111111
+                        },
+                        "type": "range"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "",
+                        "url": "/d/X-raRR97z/vulnerabilities-security?var-rulelevel=11&var-rulelevel=12&var-rulelevel=13&from=${__from}&to=${__to}"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byFrameRefID",
+                  "options": "B"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "red",
+                      "mode": "fixed"
+                    }
+                  },
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "options": {
+                          "from": -1,
+                          "result": {
+                            "index": 0,
+                            "text": "HIGH"
+                          },
+                          "to": 100000000000000000000
+                        },
+                        "type": "range"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "",
+                        "url": "/d/X-raRR97z/vulnerabilities-security?var-rulelevel=8&var-rulelevel=9&var-rulelevel=10&from=${__from}&to=${__to}"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byFrameRefID",
+                  "options": "C"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "light-orange",
+                      "mode": "fixed"
+                    }
+                  },
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "options": {
+                          "from": -1,
+                          "result": {
+                            "index": 0,
+                            "text": "MEDIUM"
+                          },
+                          "to": 10000000000000
+                        },
+                        "type": "range"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "",
+                        "url": "/d/X-raRR97z/vulnerabilities-security?var-rulelevel=6&var-rulelevel=7&from=${__from}&to=${__to}"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byFrameRefID",
+                  "options": "D"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "blue",
+                      "mode": "fixed"
+                    }
+                  },
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "options": {
+                          "from": -1,
+                          "result": {
+                            "index": 0,
+                            "text": "LOW"
+                          },
+                          "to": 1e+24
+                        },
+                        "type": "range"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "",
+                        "url": "/d/X-raRR97z/vulnerabilities-security?var-rulelevel=3&var-rulelevel=4&var-rulelevel=5&from=${__from}&to=${__to}"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 0,
+            "y": 55
+          },
+          "id": 34,
+          "maxDataPoints": 3,
+          "options": {
+            "displayLabels": [
+              "value"
+            ],
+            "legend": {
+              "displayMode": "hidden",
+              "placement": "right"
+            },
+            "pieType": "pie",
+            "reduceOptions": {
+              "calcs": [
+                "sum"
+              ],
+              "fields": "/^Count$/",
+              "values": false
+            },
+            "tooltip": {
+              "mode": "single"
+            }
+          },
+          "pluginVersion": "8.2.3",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                }
+              ],
+              "hide": false,
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "data.vulnerability.severity: Critical AND agent.name:$agentname AND rule.level:$rulelevel",
+              "refId": "A",
+              "timeField": "@timestamp"
+            },
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                }
+              ],
+              "hide": false,
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "data.vulnerability.severity: High AND agent.name:$agentname AND rule.level:$rulelevel",
+              "refId": "B",
+              "timeField": "@timestamp"
+            },
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "@timestamp",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                }
+              ],
+              "hide": false,
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "data.vulnerability.severity: Medium AND agent.name:$agentname AND rule.level:$rulelevel",
+              "refId": "C",
+              "timeField": "@timestamp"
+            },
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "@timestamp",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                }
+              ],
+              "hide": false,
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "data.vulnerability.severity: Low AND agent.name:$agentname AND rule.level:$rulelevel",
+              "refId": "D",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Vulnerability Risks",
+          "type": "piechart"
+        },
+        {
+          "datasource": "Elasticsearch-Wazuh-Alerts",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                }
+              },
+              "links": [
+                {
+                  "title": "Vulnerabilities Details",
+                  "url": "/d/X-raRR97z/vulnerabilities-security?var-cve=${__series.name}&from=${__from}&to=${__to}"
+                }
+              ],
+              "mappings": []
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 12,
+            "y": 55
+          },
+          "id": 38,
+          "maxDataPoints": 3,
+          "options": {
+            "displayLabels": [],
+            "legend": {
+              "displayMode": "list",
+              "placement": "right",
+              "values": []
+            },
+            "pieType": "donut",
+            "reduceOptions": {
+              "calcs": [
+                "sum"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "tooltip": {
+              "mode": "single"
+            }
+          },
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "data.vulnerability.cve",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_count",
+                    "size": "5"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "rule.groups: vulnerabili* AND agent.name:$agentname AND rule.level:$rulelevel AND data.vulnerability.severity: $vulnerabilityseverity",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Top 5 CVE",
+          "type": "piechart"
+        },
+        {
+          "datasource": "Elasticsearch-Wazuh-Alerts",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "displayMode": "auto",
+                "filterable": true
+              },
+              "links": [],
+              "mappings": [
+                {
+                  "options": {
+                    "Critical": {
+                      "color": "#b40f2d",
+                      "index": 5,
+                      "text": "CRITICAL"
+                    },
+                    "High": {
+                      "color": "light-red",
+                      "index": 3,
+                      "text": "HIGH"
+                    },
+                    "Low": {
+                      "color": "blue",
+                      "index": 6,
+                      "text": "LOW"
+                    },
+                    "Medium": {
+                      "color": "light-orange",
+                      "index": 4,
+                      "text": "MEDIUM"
+                    },
+                    "critical": {
+                      "color": "#b40f2d",
+                      "index": 8,
+                      "text": "CRITICAL"
+                    },
+                    "high": {
+                      "color": "light-red",
+                      "index": 0,
+                      "text": "HIGH"
+                    },
+                    "low": {
+                      "color": "blue",
+                      "index": 1,
+                      "text": "LOW"
+                    },
+                    "medium": {
+                      "color": "light-orange",
+                      "index": 7,
+                      "text": "MEDIUM"
+                    },
+                    "none": {
+                      "color": "green",
+                      "index": 2,
+                      "text": "NONE"
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "data.vulnerability.cvss.cvss3.vector.integrity_impact"
+                },
+                "properties": [
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-background"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "data.vulnerability.cvss.cvss3.vector.access_complexity"
+                },
+                "properties": [
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-background"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "data.vulnerability.cvss.cvss3.vector.privileges_required"
+                },
+                "properties": [
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-background"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "data.vulnerability.severity"
+                },
+                "properties": [
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-background"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "rule.level"
+                },
+                "properties": [
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "options": {
+                          "from": 3,
+                          "result": {
+                            "color": "blue",
+                            "index": 0,
+                            "text": "LOW"
+                          },
+                          "to": 5
+                        },
+                        "type": "range"
+                      },
+                      {
+                        "options": {
+                          "from": 6,
+                          "result": {
+                            "color": "light-orange",
+                            "index": 1,
+                            "text": "MEDIUM"
+                          },
+                          "to": 7
+                        },
+                        "type": "range"
+                      },
+                      {
+                        "options": {
+                          "from": 8,
+                          "result": {
+                            "color": "light-red",
+                            "index": 2,
+                            "text": "HIGH"
+                          },
+                          "to": 10
+                        },
+                        "type": "range"
+                      },
+                      {
+                        "options": {
+                          "from": 11,
+                          "result": {
+                            "color": "#b40f2d",
+                            "index": 3,
+                            "text": "CRITICAL"
+                          },
+                          "to": 13
+                        },
+                        "type": "range"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-background"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "CVE"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 136
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "",
+                        "url": "/d/spAS1rsnz/agent-security?var-Filters=data.vulnerability.cve|=|${__value.text}"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Integrity Impact"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 137
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Access Complexity"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 138
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Privileges Required"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 163
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Severity"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 90
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "Vulnerability Details",
+                        "url": "/d/spAS1rsnz/agent-security?var-Filters=data.vulnerability.cve|=|${__data.fields.CVE}﻿&${agentname:queryparam}&var-vulnerabilityseverity=${__value.raw}"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 17,
+            "x": 0,
+            "y": 64
+          },
+          "id": 40,
+          "options": {
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "8.2.3",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "data.vulnerability.cve",
+                  "id": "4",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "data.vulnerability.cvss.cvss3.vector.integrity_impact",
+                  "id": "5",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "data.vulnerability.cvss.cvss3.vector.access_complexity",
+                  "id": "6",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "data.vulnerability.cvss.cvss3.vector.privileges_required",
+                  "id": "7",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "data.vulnerability.rationale",
+                  "id": "8",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "data.vulnerability.severity",
+                  "id": "9",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                }
+              ],
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "rule.groups: vulnerabili* AND agent.name:$agentname AND rule.level:$rulelevel AND data.vulnerability.severity: $vulnerabilityseverity",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Vulnerabilites",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Count": true,
+                  "data.vulnerability.cwe_reference": true,
+                  "rule.description": true,
+                  "rule.level": true,
+                  "rule.mail": true
+                },
+                "indexByName": {
+                  "Count": 10,
+                  "data.vulnerability.cve": 0,
+                  "data.vulnerability.cvss.cvss3.vector.access_complexity": 3,
+                  "data.vulnerability.cvss.cvss3.vector.integrity_impact": 2,
+                  "data.vulnerability.cvss.cvss3.vector.privileges_required": 4,
+                  "data.vulnerability.cwe_reference": 9,
+                  "data.vulnerability.rationale": 5,
+                  "data.vulnerability.severity": 1,
+                  "rule.description": 6,
+                  "rule.level": 7,
+                  "rule.mail": 8
+                },
+                "renameByName": {
+                  "data.vulnerability.cve": "CVE",
+                  "data.vulnerability.cvss.cvss3.vector.access_complexity": "Access Complexity",
+                  "data.vulnerability.cvss.cvss3.vector.integrity_impact": "Integrity Impact",
+                  "data.vulnerability.cvss.cvss3.vector.privileges_required": "Privileges Required",
+                  "data.vulnerability.cwe_reference": "",
+                  "data.vulnerability.rationale": "Rationale",
+                  "data.vulnerability.severity": "Severity",
+                  "rule.description": "Description",
+                  "rule.level": "",
+                  "rule.mail": ""
+                }
+              }
+            },
+            {
+              "id": "sortBy",
+              "options": {
+                "fields": {},
+                "sort": [
+                  {
+                    "field": "Privileges Required"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "sortBy",
+              "options": {
+                "fields": {},
+                "sort": [
+                  {
+                    "field": "Access Complexity"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "sortBy",
+              "options": {
+                "fields": {},
+                "sort": [
+                  {
+                    "field": "Integrity Impact"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "sortBy",
+              "options": {
+                "fields": {},
+                "sort": [
+                  {
+                    "field": "Severity"
+                  }
+                ]
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": "Elasticsearch-Wazuh-Alerts",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": -1,
+                "drawStyle": "line",
+                "fillOpacity": 11,
+                "gradientMode": "hue",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "smooth",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "Critical": {
+                      "index": 3,
+                      "text": "CRITICAL"
+                    },
+                    "High": {
+                      "index": 1,
+                      "text": "HIGH"
+                    },
+                    "Low": {
+                      "index": 2,
+                      "text": "LOW"
+                    },
+                    "Medium": {
+                      "index": 0,
+                      "text": "MEDIUM"
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Medium"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "MEDIUM"
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "light-orange",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Low"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "LOW"
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "blue",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "High"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "HIGH"
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "light-red",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Critical"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "CRITICAL"
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#b40f2d",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 7,
+            "x": 17,
+            "y": 64
+          },
+          "id": 42,
+          "maxDataPoints": 100,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "single"
+            }
+          },
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "data.vulnerability.severity",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "rule.groups: vulnerabili* AND agent.name:$agentname AND rule.level:$rulelevel",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Vulerabilities by Time",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "Elasticsearch-Wazuh-Alerts",
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 74
+          },
+          "id": 56,
+          "options": {
+            "dedupStrategy": "exact",
+            "enableLogDetails": true,
+            "prettifyLogMessage": false,
+            "showCommonLabels": false,
+            "showLabels": false,
+            "showTime": false,
+            "sortOrder": "Descending",
+            "wrapLogMessage": false
+          },
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [],
+              "metrics": [
+                {
+                  "id": "1",
+                  "settings": {
+                    "limit": "500"
+                  },
+                  "type": "logs"
+                }
+              ],
+              "query": "agent.name: $agentname AND data.vulnerability.severity: $vulnerabilityseverity",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Vulnerabilities Information",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "_id": true,
+                  "_index": true,
+                  "_source": true,
+                  "_type": true,
+                  "agent.id": false,
+                  "cluster.name": true,
+                  "cluster.node": true,
+                  "data.vulnerability.references": false,
+                  "rule.pci_dss": true,
+                  "rule.tsc": true,
+                  "sort": true,
+                  "timestamp": true
+                },
+                "indexByName": {
+                  "@timestamp": 0,
+                  "_id": 1,
+                  "_index": 2,
+                  "_source": 3,
+                  "_type": 4,
+                  "agent.id": 6,
+                  "agent.ip": 7,
+                  "agent.name": 8,
+                  "cluster.name": 9,
+                  "cluster.node": 10,
+                  "data.vulnerability.assigner": 11,
+                  "data.vulnerability.cve": 12,
+                  "data.vulnerability.cve_version": 13,
+                  "data.vulnerability.cvss.cvss2.base_score": 14,
+                  "data.vulnerability.cvss.cvss2.vector.access_complexity": 15,
+                  "data.vulnerability.cvss.cvss2.vector.attack_vector": 16,
+                  "data.vulnerability.cvss.cvss2.vector.authentication": 17,
+                  "data.vulnerability.cvss.cvss2.vector.availability": 18,
+                  "data.vulnerability.cvss.cvss2.vector.confidentiality_impact": 19,
+                  "data.vulnerability.cvss.cvss2.vector.integrity_impact": 20,
+                  "data.vulnerability.cvss.cvss3.base_score": 21,
+                  "data.vulnerability.cvss.cvss3.vector.access_complexity": 22,
+                  "data.vulnerability.cvss.cvss3.vector.attack_vector": 23,
+                  "data.vulnerability.cvss.cvss3.vector.availability": 24,
+                  "data.vulnerability.cvss.cvss3.vector.confidentiality_impact": 25,
+                  "data.vulnerability.cvss.cvss3.vector.integrity_impact": 26,
+                  "data.vulnerability.cvss.cvss3.vector.privileges_required": 27,
+                  "data.vulnerability.cvss.cvss3.vector.scope": 28,
+                  "data.vulnerability.cvss.cvss3.vector.user_interaction": 29,
+                  "data.vulnerability.cwe_reference": 30,
+                  "data.vulnerability.package.architecture": 31,
+                  "data.vulnerability.package.condition": 32,
+                  "data.vulnerability.package.generated_cpe": 33,
+                  "data.vulnerability.package.name": 34,
+                  "data.vulnerability.package.version": 35,
+                  "data.vulnerability.published": 36,
+                  "data.vulnerability.rationale": 37,
+                  "data.vulnerability.references": 5,
+                  "data.vulnerability.severity": 38,
+                  "data.vulnerability.title": 39,
+                  "data.vulnerability.updated": 40,
+                  "decoder.name": 41,
+                  "highlight": 42,
+                  "id": 43,
+                  "input.type": 44,
+                  "location": 45,
+                  "manager.name": 46,
+                  "rule.description": 47,
+                  "rule.firedtimes": 48,
+                  "rule.gdpr": 49,
+                  "rule.groups": 50,
+                  "rule.id": 51,
+                  "rule.level": 52,
+                  "rule.mail": 53,
+                  "rule.pci_dss": 54,
+                  "rule.tsc": 55,
+                  "sort": 56,
+                  "timestamp": 57
+                },
+                "renameByName": {}
+              }
+            }
+          ],
+          "type": "logs"
+        }
+      ],
+      "refresh": false,
+      "schemaVersion": 31,
+      "style": "dark",
+      "tags": [],
+      "templating": {
+        "list": [
+          {
+            "allValue": "*",
+            "current": {
+              "selected": true,
+              "text": "All",
+              "value": "$__all"
+            },
+            "datasource": "Elasticsearch-Wazuh-Alerts",
+            "definition": "{\"find\": \"terms\", \"field\":\"agent.name\",\"size\": \"1000000\" }",
+            "description": null,
+            "error": null,
+            "hide": 0,
+            "includeAll": true,
+            "label": "Agent",
+            "multi": false,
+            "name": "agentname",
+            "options": [],
+            "query": "{\"find\": \"terms\", \"field\":\"agent.name\",\"size\": \"1000000\" }",
+            "refresh": 2,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 0,
+            "type": "query"
+          },
+          {
+            "allValue": "*",
+            "current": {
+              "selected": true,
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
+            },
+            "datasource": "Elasticsearch-Wazuh-Alerts",
+            "definition": "{\"find\": \"terms\", \"field\":\"rule.level\",\"query\":\"agent.name:$agentname\",\"size\": \"1000000\" }",
+            "description": null,
+            "error": null,
+            "hide": 0,
+            "includeAll": true,
+            "label": "Rules Level",
+            "multi": true,
+            "name": "rulelevel",
+            "options": [],
+            "query": "{\"find\": \"terms\", \"field\":\"rule.level\",\"query\":\"agent.name:$agentname\",\"size\": \"1000000\" }",
+            "refresh": 2,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 0,
+            "type": "query"
+          },
+          {
+            "allValue": null,
+            "current": {
+              "selected": true,
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
+            },
+            "datasource": "Elasticsearch-Wazuh-Alerts",
+            "definition": "{\"find\": \"terms\", \"field\":\"data.vulnerability.severity\",\"size\": \"1000000\" }",
+            "description": null,
+            "error": null,
+            "hide": 0,
+            "includeAll": true,
+            "label": "Vulnerability Severity",
+            "multi": true,
+            "name": "vulnerabilityseverity",
+            "options": [],
+            "query": "{\"find\": \"terms\", \"field\":\"data.vulnerability.severity\",\"size\": \"1000000\" }",
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 0,
+            "type": "query"
+          },
+          {
+            "datasource": "Elasticsearch-Wazuh-Alerts",
+            "description": null,
+            "error": null,
+            "filters": [],
+            "hide": 0,
+            "label": null,
+            "name": "Filters",
+            "skipUrlSync": false,
+            "type": "adhoc"
+          }
+        ]
+      },
+      "time": {
+        "from": "now-12h",
+        "to": "now"
+      },
+      "timepicker": {},
+      "timezone": "",
+      "title": "Agent Security",
+      "uid": "spAS1rsnz",
+      "version": 1
+    }

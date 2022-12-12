@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wazuh
+  namespace: argocd
+spec:
+  source:
+    path: wazuh/app
+    repoURL: https://github.com/ArnolSwet/tfg_arnau-cirera_ub2022-2023.git
+    targetRevision: testing
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: wazuh
+  project: default
